@@ -1,0 +1,12 @@
+%% vim ts=2 sw=2 et ft=erlang
+{application, nitrogen_tinymce,
+ [
+  {description, "TinyMCE plugin for the Nitrogen Web Framework"},
+  {vsn, "0.0.1"},
+  {registered, []},
+  {applications, [
+                  kernel,
+                  stdlib
+                 ]},
+  {env, []}
+ ]}.
