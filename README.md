@@ -36,7 +36,7 @@ Run `make` in your Application. The rest should be automatic.
 
 Without any options specified, this is how the default editor looks:
 
-![preview](https://raw.githubusercontent.com/choptastic/nitrogen_tinymce/master/priv/readme/preview.gif)
+![preview](https://raw.githubusercontent.com/choptastic/nitrogen_tinymce/master/priv/readme/preview.png)
 
 ## License
 
