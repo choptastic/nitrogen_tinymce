@@ -11,10 +11,10 @@
 reflect() -> record_info(fields, inplace_tinymce).
 
 -spec render_element(#tinymce{}) -> body().
-render_element(Record = #tinymce{text=Text, class=Class}) ->
+render_element(Rec = #tinymce{text=Text, class=Class}) ->
     ID = wf:temp_id(),
-    wire_init(ID),
-    wire_pre_postback(ID),
+    wire_init(ID, Rec),
+    wire_before_postback(ID),
     [
         %LoadScript,
         #textarea{
@@ -25,12 +25,34 @@ render_element(Record = #tinymce{text=Text, class=Class}) ->
         }
     ].
 
-wire_init(ID) ->
+wire_init(ID, #tinymce{plugins=Plugins, toolbar1=TB1, toolbar2=TB2, toolbar3=TB3, menubar=Menubar, options=Options}) ->
+    Json = build_json_options(ID, Plugins, TB1, TB2, TB3, Menubar, Options),
+    Url = <<"//tinymce.cachefly.net/4.0/tinymce.min.js">>,
     Init =
-        "Nitrogen.$dependency_register_function('//tinymce.cachefly.net/4.0/tinymce.min.js', function() {
-            tinymce.init({selector: 'textarea.wfid_~s'});
-        })",
-    wf:defer(wf:f(Init,[ID])).
+        <<"Nitrogen.$dependency_register_function('~s', function() {
+            tinymce.init(~s);
+        })">>,
+    wf:defer(wf:f(Init, [Url, Json])).
 
-wire_pre_postback(ID) ->
+wire_before_postback(ID) ->
     wf:wire(#before_postback{script=wf:f("try {tinymce.get('~s').save() }catch(ex){}",[ID])}).
+
+
+build_json_options(ID, Plugins, TB1, TB2, TB3, Menubar, Opt0) ->
+    Opt = [
+        {plugins, safe_to_binary(Plugins)},
+        {toolbar1, safe_to_binary(TB1)},
+        {toolbar2, safe_to_binary(TB2)},
+        {toolbar3, safe_to_binary(TB3)},
+        {menubar, Menubar},
+        {selector, wf:f(<<"textarea.wfid_~s">>, [ID])}
+        | [{wf:to_binary(K), safe_to_binary(V)} || {K,V} <- Opt0]
+    ],
+    iolist_to_binary(nitro_mochijson2:encode({struct, Opt})).
+
+safe_to_binary(S) when ?IS_STRING(S) ->
+    wf:to_binary(S);
+safe_to_binary(L) when is_list(L) ->
+    [safe_to_binary(X) || X <- L];
+safe_to_binary(S) ->
+    S.
