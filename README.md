@@ -12,7 +12,7 @@ Add it as a rebar dependency by adding into the deps section of rebar.config:
 
 ### Using Nitrogen's built-in plugin installer (Requires Nitrogen 2.3.0)
 
-**Note: This requires Nitrogen 2.3.0 (or at earliest this commit: https://github.com/nitrogen/nitrogen_core/commit/78eaf4849ebae5bd2895491c98edf717dc9523fc , which introduced the `#before_postback{}` action).**
+**Note: This requires Nitrogen 2.3.0 (or at earliest [78eaf4849](https://github.com/nitrogen/nitrogen_core/commit/78eaf4849ebae5bd2895491c98edf717dc9523fc) , which introduced the `#before_postback{}` action).**
 
 Run `make` in your Application. The rest should be automatic.
 
