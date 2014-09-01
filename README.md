@@ -1,6 +1,6 @@
 # TinyMCE for Nitrogen (#tinymce)
 
-A WYSIWYG textarea element for the [Nitrogen Web Framework](http://nitrogenoproject.com) using the editor [TinyMCE](http://www.tinymce.com/).
+A WYSIWYG textarea element for the [Nitrogen Web Framework](http://nitrogenproject.com) using the editor [TinyMCE](http://www.tinymce.com/).
 
 ## Installing into a Nitrogen Application
 
