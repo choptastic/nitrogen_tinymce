@@ -8,7 +8,7 @@
 ]).
 
 -spec reflect() -> [atom()].
-reflect() -> record_info(fields, inplace_tinymce).
+reflect() -> record_info(fields, tinymce).
 
 -spec render_element(#tinymce{}) -> body().
 render_element(Rec = #tinymce{text=Text, class=Class}) ->
@@ -25,9 +25,11 @@ render_element(Rec = #tinymce{text=Text, class=Class}) ->
         }
     ].
 
-wire_init(ID, #tinymce{plugins=Plugins, toolbar1=TB1, toolbar2=TB2, toolbar3=TB3, menubar=Menubar, options=Options}) ->
+wire_init(ID, #tinymce{plugins=Plugins, toolbar1=TB1, toolbar2=TB2, toolbar3=TB3, menubar=Menubar, options=Options, apikey=Apikey0}) ->
     Json = build_json_options(ID, Plugins, TB1, TB2, TB3, Menubar, Options),
-    Url = <<"//cdn.tinymce.com/4/tinymce.min.js">>,
+    AppApikey = wf:config(tinymce_apikey),
+    Apikey = wf:to_binary(wf:coalesce([Apikey0, AppApikey])),
+    Url = <<"//cdn.tiny.cloud/1/",Apikey/binary,"/tinymce/5/tinymce.min.js">>,
     Init =
         <<"Nitrogen.$dependency_register_function('~s', function() {
             tinymce.init(~s);
@@ -48,7 +50,7 @@ build_json_options(ID, Plugins, TB1, TB2, TB3, Menubar, Opt0) ->
         {selector, wf:f(<<"textarea.wfid_~s">>, [ID])}
         | [{wf:to_binary(K), safe_to_binary(V)} || {K,V} <- Opt0]
     ],
-    iolist_to_binary(nitro_mochijson2:encode({struct, Opt})).
+    iolist_to_binary(wf:json_encode(Opt)).
 
 safe_to_binary(S) when ?IS_STRING(S) ->
     wf:to_binary(S);

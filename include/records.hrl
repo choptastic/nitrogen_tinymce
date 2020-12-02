@@ -9,6 +9,7 @@
 		toolbar2= ?TINYMCE_DEFAULT_TOOLBAR_2 	:: text(),
 		toolbar3= <<"">>	:: text(),
 		menubar=true		:: boolean(),
+        apikey              :: text(),
 		options=[]			:: proplist()
 	}).
 -record(inplace_tinymce, {?ELEMENT_BASE(element_inplace_tinymce),
@@ -18,5 +19,6 @@
 		start_mode=view		:: view | edit,
 		validators=[]		:: [tuple()],
 		delegate=undefined	:: module(),
+        apikey              :: text(),
 		options=[]			:: proplist()
 	}).
