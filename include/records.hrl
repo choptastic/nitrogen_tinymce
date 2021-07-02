@@ -4,7 +4,7 @@
 
 -record(tinymce, {?ELEMENT_BASE(element_tinymce),
 		text=""				:: text(),
-		plugins=  ?TINYMCE_DEFAULT_PLUGINS 		:: text(),
+		plugins=  ?TINYMCE_DEFAULT_PLUGINS 		:: text() | [atom() | text()],
 		toolbar1= ?TINYMCE_DEFAULT_TOOLBAR_1	:: text(),
 		toolbar2= ?TINYMCE_DEFAULT_TOOLBAR_2 	:: text(),
 		toolbar3= <<"">>	:: text(),
