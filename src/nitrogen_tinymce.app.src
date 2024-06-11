@@ -2,7 +2,7 @@
 {application, nitrogen_tinymce,
  [
   {description, "TinyMCE plugin for the Nitrogen Web Framework"},
-  {vsn, "0.0.1"},
+  {vsn, "0.0.2"},
   {registered, []},
   {applications, [
                   kernel,
