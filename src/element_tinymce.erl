@@ -27,9 +27,14 @@ render_element(Rec = #tinymce{text=Text, class=Class}) ->
 
 wire_init(ID, #tinymce{plugins=Plugins, toolbar1=TB1, toolbar2=TB2, toolbar3=TB3, menubar=Menubar, options=Options, apikey=Apikey0}) ->
     Json = build_json_options(ID, Plugins, TB1, TB2, TB3, Menubar, Options),
-    AppApikey = wf:config(tinymce_apikey),
-    Apikey = wf:to_binary(wf:coalesce([Apikey0, AppApikey])),
-    Url = <<"//cdn.tiny.cloud/1/",Apikey/binary,"/tinymce/5/tinymce.min.js">>,
+    Url = case wf:config(tinymce_url) of
+        undefined ->
+            AppApikey = wf:config(tinymce_apikey),
+            Apikey = wf:to_binary(wf:coalesce([Apikey0, AppApikey])),
+            Url = <<"//cdn.tiny.cloud/1/",Apikey/binary,"/tinymce/5/tinymce.min.js">>;
+        U ->
+            U
+    end,
     Init =
         <<"Nitrogen.$dependency_register_function('~s', function() {
             tinymce.init(~s);
